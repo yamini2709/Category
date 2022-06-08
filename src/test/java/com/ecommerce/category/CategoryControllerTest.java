@@ -1,67 +1,72 @@
 package com.ecommerce.category;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.when;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
+import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.times;
 
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.boot.test.context.SpringBootTest;
 
-@SpringBootTest
+@SpringBootTest(classes = {CategoryControllerTest.class})
 public class CategoryControllerTest {
 	
 	@Mock
-	CategoryServiceImpl categoryService;
+	CategoryServiceImpl service;
 	
 	@InjectMocks
 	CategoryController controller;
-	
-	Category category;
+	Category allData = new Category(1,"Mobiles",new Date());
 	
 	@Test
-	public void test_saveCategory() {
-		category=new Category(555, "clothes", new Date());
-		when(categoryService.saveCategory(category)).thenReturn(category);
-		assertEquals(category,categoryService.saveCategory(category));
-	}
-	
-//	@Test
-//	public void test_getByCategoryId() {
-//		List<Category>allCategories=new ArrayList<Category>();
-//		 allCategories.add(new Category(111, "Watches", new Date()));
-//		 allCategories.add(new Category(22, "Laptop", new Date()));
-//		 int categoryId = 111;
-//		 categoryService.getByCategoryId(category);
-//	}
-
-	@Test
-	public void test_updateCategory() {
-		category=new Category(555, "watch", new Date());
-		when(categoryService.editCategory(category)).thenReturn(category);
-		assertEquals(category, categoryService.editCategory(category));
+	public void saveCategory() {
+		when(service.saveCategory(allData)).thenReturn(allData);
+		assertEquals("Added Successfully", controller.saveCategory(allData));
 	}
 	
 	@Test
-	public void test_getCategories() {
-		List<Category> categories = new ArrayList<Category>();
-		categories.add(new Category(11, "boat", new Date()));
-		categories.add(new Category(22, "noise", new Date()));
-		categories.add(new Category(33, "realme", new Date()));
-		when(categoryService.getCategories()).thenReturn(categories);
-		assertEquals(3, categoryService.getCategories().size());
+	public void getCategories() {
+		List<Category> allData = new ArrayList<Category>();
+		allData.add(new Category(1, "Boat", new Date()));
+		allData.add(new Category(2, "Noise", new Date()));
+		when(service.getCategories()).thenReturn(allData);
+		assertEquals(allData, controller.getCategories());
 	}
 	
-//	@Test
-//	public void test_deleteCategory() {
-//		Category category = new Category(11, "boat", new Date());
-//		Integer categoryId = 11;
-//		when(categoryService.deleteCategory(categoryId)).thenReturn(category);
-//	}
+	@Test
+	public void getByCategoryId() {
+		Integer categoryId = 1;
+		controller.getByCategoryId(categoryId);
+		when(service.getByCategoryId(categoryId)).thenReturn(allData);
+		assertEquals(1, controller.getByCategoryId(categoryId).getCategoryId());
+	}
+	
+	@Test
+	public void editCategory() {
+		Category category = new Category(3, "FireBolt", new Date());
+		Integer categoryId=3;
+		when(service.editCategory(category)).thenReturn(category);
+		assertEquals(category, controller.editCategory(categoryId, category));
+	}
+	
+	@Test
+	public void deleteCategory() {
+		Integer categoryId = 2;
+		controller.deleteCategory(categoryId);
+		verify(service, times(1)).deleteCategory(categoryId);
+	}
+	
+	@Test
+	public void deleteAll() {
+		service.deleteAll();
+		assertEquals("Deleted all Categories in the Database", controller.deleteAllcategories());
 }
+}
+

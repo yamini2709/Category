@@ -1,9 +1,9 @@
 package com.ecommerce.category;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.when;
-import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -30,8 +30,6 @@ public class CategoryServiceTest {
 		assertEquals(category, service.saveCategory(category));
 	}	
 	
-
-	
 	@Test
 	public void getCategoriesTest() {
 		List<Category> allCategories = new ArrayList<Category>();		
@@ -43,7 +41,8 @@ public class CategoryServiceTest {
 	
 	@Test
 	public void editCategory() {
-		Category category = new Category(22, "Laptop", new Date());
+		Integer categoryId =22;
+		Category category = new Category(22, "Laptop", new Date());		
 		when(repository.save(category)).thenReturn(category);
 		assertEquals(category, service.editCategory(category));
 	}
@@ -65,6 +64,12 @@ public class CategoryServiceTest {
 		int categoryId = 111;
 		service.deleteCategory(categoryId);
 		verify(repository,times(1)).deleteById(111);
+	}
+	
+	@Test
+	public void deleteAllcategories() {
+		service.deleteAll();
+		verify(repository, times(1)).deleteAll();
 	}
 	
 }

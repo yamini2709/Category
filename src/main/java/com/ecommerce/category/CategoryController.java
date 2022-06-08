@@ -10,6 +10,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+import com.ecommerce.category.Category;
+import com.ecommerce.category.CategoryServiceImpl;
+
 
 @RestController
 public class CategoryController {
@@ -23,8 +26,8 @@ public class CategoryController {
 	}
 
 	@GetMapping("/category-by-id/{categoryId}")
-	public Category getByCategoryId(@PathVariable int categoyId) {
-		return categoryService.getByCategoryId(categoyId);
+	public Category getByCategoryId(@PathVariable int categoryId) {
+		return categoryService.getByCategoryId(categoryId);
 		
 	}
 	@GetMapping("/categories")
@@ -33,8 +36,7 @@ public class CategoryController {
 	}
 	
 	@PutMapping("/updateCategory/{categoryId}")
-	public Category updateCategory(@PathVariable Integer categoryId,@RequestBody Category category) {
-		category.setCategoryId(categoryId);
+	public Category editCategory(@PathVariable Integer categoryId,@RequestBody Category category) {
 		return categoryService.editCategory(category);		
 	}
 
@@ -42,6 +44,12 @@ public class CategoryController {
 	public String deleteCategory(@PathVariable Integer categoryId) {
 		categoryService.deleteCategory(categoryId);
 		return "Deleted Successfully";
-	}
+	}	
 	
+	@DeleteMapping("/allCategories")
+	public String deleteAllcategories() {
+		categoryService.deleteAll();
+		return "Deleted all Categories in the Database";
+	}
+
 }

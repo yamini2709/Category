@@ -7,8 +7,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 @SpringBootTest
 class CategoryApplicationTests {
 
-		@Test
-		void contextLoads() {
-			
-		}
+		  @Test
+		   public void main() {
+			  CategoryApplication.main(new String[] {});
+		   }
 }

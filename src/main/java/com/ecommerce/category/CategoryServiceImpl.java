@@ -6,6 +6,8 @@ import org.springframework.stereotype.Service;
 
 
 
+
+
 @Service
 public class CategoryServiceImpl {
 	@Autowired
@@ -18,26 +20,27 @@ public class CategoryServiceImpl {
 	public List<Category> getCategories() {
 		return categoryRepository.findAll();
 	}
+
+	public Category getByCategoryId(int categoryId) {
+		List<Category>categories = categoryRepository.findAll();
+		Category category = null;
+		for(Category cat:categories) {
+			if(cat.getCategoryId()==categoryId)
+				category=cat;
+		}
+		return category;
+	}
 	
 	public Category editCategory(Category category) {
 		return categoryRepository.save(category);
 	}
 
-	public void deleteCategory(Integer categoryId) {
-		categoryRepository.deleteById(categoryId);
-		
+	public void deleteAll() {
+		categoryRepository.deleteAll();
 	}
 
-	
-
-	public Category getByCategoryId(int categoyId) {
-		List<Category>categories = categoryRepository.findAll();
-		Category category = null;
-		for(Category cat:categories) {
-			if(cat.getCategoryId()==categoyId)
-				category=cat;
-		}
-		return category;
+	public void deleteCategory(Integer categoryId) {
+		categoryRepository.deleteById(categoryId);
 	}
 }
 
